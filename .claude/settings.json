@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -S /var/run/docker.sock ] || (dockerd --host=unix:///var/run/docker.sock --iptables=false &>/tmp/dockerd.log & sleep 2)",
+            "statusMessage": "Starting Docker daemon..."
+          }
+        ]
+      }
+    ]
+  }
+}
