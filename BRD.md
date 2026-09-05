@@ -112,7 +112,19 @@ Retrieval and LLMs appear in exactly two bounded roles.
   monitor (flagging that a late signal has landed before the line moved) is **NOT in
   v1**. The book-repricing-latency inefficiency it targets has **no located
   measurement** — the edge research searched for one and deleted its own estimate.
-  Build it only after FR-6 measures that latency and finds it exploitable.
+  **Evidence now points against it.** Croxson & Reade, "Information and Efficiency:
+  Goal Arrival in Soccer Betting," *The Economic Journal* 124(575):62–91 (2014) — 1,004
+  EPL matches on Betfair — found prices "responded immediately," "fully incorporated the
+  new information," and "did not drift." That is an exchange, in-play, soccer, and a
+  goal rather than a scratch, so it does not measure this exact latency; but it is the
+  only peer-reviewed measurement of the *class* of phenomenon the monitor bets against,
+  and it points the wrong way.
+  **The design is also internally contradictory:** it requires a human gate ("never
+  auto-emitting a new number") while claiming an edge measured in "minutes to hours." If
+  the market reprices in seconds, the gate consumes the window; if it truly takes hours,
+  an hourly batch job captures the same signal without event-driven infrastructure. No
+  evidence is offered that the band between those exists.
+  **Do not build. Revisit only if FR-6.1 measures an exploitable window directly.**
 
 ### FR-3 Prediction Model
 
@@ -324,19 +336,36 @@ should not shape the design.
    Obtain via institutional library, ILL, or by emailing the author.
 4. What is the actual book-repricing latency after injury news? (FR-6.1)
 5. What are real accepted stakes on CFB team totals and alternates? (FR-6.2)
-6. Confirm the ForecastBench figures at source (arXiv:2409.19839) — two team members
+6. **Is there a backtestable historical corpus for the LLM feature layer at any budgeted
+   price?** RSS is live-only with no archive; the cheapest archive located is a
+   $449/mo tier. **If the answer is no, FR-2.1 cannot be evaluated at all** and the
+   retrieval layer should be cut, not deferred. Answer this before Phase 0 ends.
+7. Confirm the ForecastBench figures at source (arXiv:2409.19839) — two team members
    reported incompatible numbers and neither read the paper.
 
 ---
 
 ## 7. Suggested Build Phases
 
-> **Effort figures are estimates at 25–30 hrs/week and carry an explicit dependency on
-> §4's blocking actions completing first. The adversarial review's objection — that
-> these ranges were never audited and are optimistic against the data and compliance
-> dependencies — is accepted; treat the upper bound as the planning number.**
+> **CORRECTED 2026-09-05 after adversarial audit. Do not use the source memo's figures.**
+>
+> The build memo's effort model was never audited by the citation round and contains a
+> verified arithmetic error: its stated totals are **not the sum of its own component
+> rows**, and are short in every column — variant (a) sums to **21.5 / 34.5 / 54.5**
+> against a stated 20.0 / 31.0 / 48.0. Its stated "Phase 0: 3–4 weeks" is **below the
+> floor of its own components** (7.5 / 12.0 / 19.0 for the modules its own exit criteria
+> require). Its Bottom Line, its work breakdown, and its timeline give three mutually
+> inconsistent answers, and the one printed in the Bottom Line is the most optimistic by
+> a factor of two to three.
+>
+> The figures below are the corrected ranges. They assume 25–30 hrs/week — **an
+> unexamined assumption; at 15 hrs/week every calendar figure doubles.** Estimation
+> research (Flyvbjerg & Budzier: 27% mean overrun, 1-in-6 at 200%; Jørgensen:
+> technical roles systematically over-optimistic; McConnell's cone of uncertainty: up
+> to 4× at this definition stage) supports a 1.4–1.7× multiplier on any bottom-up
+> estimate made before requirements settle. **Plan against the central case.**
 
-### Phase 0 — Harness & probes (3–5 weeks) · *unconditional*
+### Phase 0 — Harness & probes (**8–19 weeks; central ~12**) · *unconditional*
 Bitemporal storage + `as_of()`; walk-forward splitter; CLV computation; leakage test
 suite; three trivial baselines; **immutable pick log**; FR-6 latency and capacity probes
 running in parallel.
@@ -346,7 +375,7 @@ CLV confidence intervals reported.
 licensing questions come back prohibitive — **stop.** Building a model on ungoverned or
 unlicensed data is not worth doing.
 
-### Phase 1 — Falsify the edge (3–5 weeks) · *unconditional*
+### Phase 1 — Falsify the edge (**+4–21 weeks; cumulative 12–40, central 20–26**) · *unconditional*
 Pre-register first. Small deliberately-limited feature set; one well-understood model
 class; no ensembling; no large hyperparameter search. Run **FR-4.6 decorrelation first**.
 **Exit:** the Phase 1 gate in §3.3, in full.
@@ -363,18 +392,29 @@ ablation in CLV terms.
 **Kill-gate:** prospective CLV not significant — **stop.** A backtest that does not
 replicate forward is the expected outcome, not an anomaly.
 
-### Phase 3 — Compliance foundation (8–16 weeks, overlaps Phase 2) · *conditional*
+### Phase 3 — Compliance foundation (8–16 weeks, partly serial) · *conditional*
 Gaming counsel engagement; state allowlist determination; **payment-processor
 acceptability test in writing — do this first, it is cheap and dispositive**; terms and
 ARL-compliant subscription mechanics; geo/age gating.
 **Kill-gate:** any compliance kill criterion in `BUSINESS_PLAN.md` §5.6 trips — **stop.**
 
-### Phase 4 — Product (10–16 weeks; 14–22 if LLM in path) · *conditional on 1–3*
+### Phase 4 — Product (**22–35 weeks; central ~26**) · *conditional on 1–3*
 Web delivery, public auditable CLV record, billing, monitoring, drift detection.
 **Exit:** a subscriber can sign up, be geo/age-gated, receive picks, and audit the full
 record.
 
-**Calendar reality:** a compliant paid launch inside the 2026 season is not achievable.
-**2027 is the earliest honest target**, and Phase 2 requires a full season regardless.
-Phases 0–1 can and should start immediately — they are the cheap part, and they are
-the part that probably ends the project.
+**Calendar reality, corrected.** Total to a shippable product: **34–75 weeks, central
+46–52** — roughly 2.5× the source memo's headline. From 2026-09-05 that puts first ship
+in **August 2027 – March 2028**.
+
+The sharper consequence is for the *verdict*, not the product. Under the corrected
+central case Phase 1 completes between **late November 2026 and late March 2027** — at
+or after the end of the 2026 season. **There is no partial-season consolation prize.**
+The honest statement: start now and the first prospective evidence arrives September
+2027; start in June 2027 and it still arrives September 2027. The source memo's
+compression of Phase 0 to 3–4 weeks was the only thing obscuring that, and it is the
+whole of the opportunity-cost argument.
+
+Phases 0–1 are still the right thing to do first — still the cheap part, still the part
+most likely to end the project — but start them understanding they buy a verdict in
+2027, not a 2026 shadow season.

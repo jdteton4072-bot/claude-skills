@@ -378,3 +378,18 @@ probably will not.**
 `BRD.md` Phase 0–1, which is designed to falsify the edge hypothesis as cheaply as
 possible and to stop the project if it fails. Revisit this plan only if Phase 1 clears
 its pre-registered gate.
+
+**One correction to the cost of that advice, added after adversarial audit.** The
+build memo's effort model contained a verified arithmetic error — its stated totals
+were not the sum of its own component rows, and its "Phase 0: 3–4 weeks" was below the
+floor of its own estimates. Corrected, **the falsification experiment is 12–40 weeks
+(central 20–26), not 5–9**, and total time to a shippable product is 34–75 weeks
+rather than 15–25.
+
+That does not change the recommendation, but it sharpens the opportunity-cost
+argument considerably: under the corrected central case, Phase 1 returns its verdict
+**at or after the end of the 2026 season**, so the first prospective evidence arrives
+in September 2027 whether the work starts now or in June 2027. There is no
+partial-season consolation prize. The experiment is still worth running and is still
+the cheapest way to kill the idea — but it is a two-to-six-month commitment, not a
+one-month one, and it should be entered as such.
