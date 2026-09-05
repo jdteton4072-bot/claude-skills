@@ -1,7 +1,7 @@
 # Build Complexity Assessment: NFL/CFB Spread & Totals Prediction Service
 
 **Role:** Implementation & Build Complexity Engineer
-**Date:** 2026-09-05
+**Date:** 2026-09-05 (corrected 2026-09-05, post-citation-audit)
 
 ---
 
@@ -109,14 +109,51 @@ Notes on the table:
 
 **Sample-size computation (as requested):**
 
-- NFL 2026 regular season: 272 games (32 teams x 17 games), confirmed for the
-  2026 season by the NFL's official schedule release.
-  [Source: NFL.com/media 2026 schedule release, published 2026-05-14](https://media.nfl.com/content/dam/communications/football-communications/2026/news/05%2014%2026%20-%20Schedule%20Release.pdf)
-- CFB FBS 2025 season: approximately 134–136 FBS teams
-  [Source: Wikipedia, 2025 NCAA Division I FBS football season, ongoing/updated page — treat team count as current as of the 2025 season and re-check for 2026](https://en.wikipedia.org/wiki/2025_NCAA_Division_I_FBS_football_season)
-  playing roughly 12–13 games each, yielding on the order of ~800–870 FBS regular-season
-  games league-wide per year (before bowls); this figure is a derived estimate, not a
-  cited count, since no source above gives an aggregate game total directly.
+- **Breakeven win rate at standard -110 odds: 52.38%.** This figure is a direct
+  arithmetic consequence of the standard American-odds-to-implied-probability
+  conversion, not an empirical or attributed claim, and is shown here in full so it
+  does not rest on an unstated external authority: for negative American odds of
+  magnitude *M* (e.g., -110, so *M* = 110), the break-even (implied) probability is
+  *M* / (*M* + 100). For *M* = 110: 110 / 210 = 0.52380..., i.e., 52.38%. The "vig"
+  is the amount by which the two-sided implied probability (52.38% + 52.38% =
+  104.76%) exceeds 100% (a 4.76-point overround), which is how a sportsbook prices
+  in its commission on a two-way market. **Sourcing status:** in this correction
+  round, an attempt was made to locate and retrieve an independent, dated,
+  third-party authoritative source for this figure (sportsbook-education sites,
+  betting-math calculator sites, and a general reference encyclopedia entry on
+  moneyline odds were identified via search). Every one of these could not be
+  retrieved in this session — page fetches to bettingpros.com, procomputergambler.com,
+  boydsbets.com, sportsbettingoddscalculator.com, pikkit.com, topendsports.com, and
+  en.wikipedia.org all failed due to this session's network egress restrictions, so
+  none is cited here as a verified source (citing a URL that could not actually be
+  retrieved would violate this audit's sourcing standard). **Confidence: High** on
+  the arithmetic itself (it follows directly from the definition of American odds
+  and can be checked independently by anyone with a calculator); **Low** on
+  independent third-party corroboration, since no external dated source was
+  successfully retrieved and verified this session. If a specific attributable
+  source is required for the final deliverable, that retrieval should be attempted
+  again from a network context that is not subject to this environment's egress
+  restrictions.
+- NFL 2026 regular season: reported at 272 games (32 teams x 17 games each, 18
+  weeks), kicking off 2026-09-09, consistent across several independent items
+  surfaced via search (an NFL.com media schedule-release PDF, NFL.com's own
+  by-team schedule listing, and CBS Sports' schedule coverage). **Sourcing status:**
+  none of these pages could be independently fetched and verified in this session —
+  the NFL.com PDF, NFL.com by-team page, CBS Sports article, and topendsports.com
+  recap all failed to resolve under this session's network egress restrictions.
+  The figure is therefore retained (multiple independent outlets converge on the
+  same numbers in search-result summaries) but its confidence is downgraded from
+  the original draft: **Confidence: Low-Medium** (previously stated as Medium/High
+  on the assumption the primary-source PDF had been verified; it had not been
+  independently confirmed by direct retrieval, only by search-snippet agreement).
+- CFB FBS 2025 season: approximately 134–136 FBS teams playing roughly 12–13 games
+  each, yielding on the order of ~800–870 FBS regular-season games league-wide per
+  year (before bowls). This was flagged in the original memo as "a derived
+  estimate, not a cited count," and that status is unchanged: the Wikipedia page
+  used to source the team count could not be retrieved and verified in this
+  session either. **Confidence: Low** (unsourced, derived approximation only —
+  treat as a planning-order-of-magnitude number, not a defensible fact for any
+  external-facing claim).
 - Combining NFL + FBS gives on the order of 1,050–1,150 total graded games/season
   across both leagues — but the number that matters for statistical power is *bets
   placed against a specific, stable strategy*, which is smaller than total games
@@ -128,23 +165,27 @@ Notes on the table:
   of selective bets is **not** sufficient to distinguish a real 2–3pt edge from
   variance at conventional confidence levels. Two to three full seasons (800–1,500+
   graded bets) is closer to the minimum needed for a statistically credible verdict,
-  which directly shapes the timeline in Section 3.
+  which directly shapes the timeline in Section 3. This conclusion is not sensitive
+  to whether the 52.38% constant is externally corroborated beyond its own
+  arithmetic (see above) — it would hold under any -110-equivalent vig structure in
+  this range.
 
 ---
 
 ## 3. Timeline
 
 **Seasonal constraint, stated explicitly:** NFL and FBS CFB seasons run roughly
-early September through mid-January (2026 NFL regular season: 2026-09-09 to
-2027-01-10, per the NFL's own schedule release cited above; CFB runs slightly
-earlier, late August, through the January bowl season/CFP). Outside that window
-there is no live betting market to validate against — historical backtesting can
-continue year-round, but **live, real-time CLV validation is only possible
-September–January.**
+early September through mid-January. Per search-surfaced (not independently
+fetched/verified this session — see Section 2 sourcing note) reporting, the 2026
+NFL regular season is expected to run 2026-09-09 to roughly early-to-mid January
+2027; CFB runs slightly earlier, late August, through the January bowl
+season/CFP. Outside that window there is no live betting market to validate
+against — historical backtesting can continue year-round, but **live, real-time
+CLV validation is only possible roughly September–January.**
 
-**What 2026-09-05 implies:** the 2026 season has already begun (or is about to —
-NFL kicks off 2026-09-09 per the schedule release). That means:
-- There is **not enough runway left before 2026-09-09 to build and validate a model
+**What 2026-09-05 implies:** the 2026 season has already begun or is about to
+(NFL kickoff reported as 2026-09-09). That means:
+- There is **not enough runway left before kickoff to build and validate a model
   in time for meaningful live validation in the 2026 season's early weeks** — Phase 0
   (historical backtest) alone is estimated at 5–9 weeks.
 - The realistic plan is to use **September 2026–January 2027 for passive/paper-trade
@@ -153,9 +194,10 @@ NFL kicks off 2026-09-09 per the schedule release). That means:
   roughly October/November 2026 — begin shadow-tracking live CLV against the
   remainder of the 2026 season without accepting subscriber money yet).
 - The **next full season available for a complete, ungated live-validation cycle from
-  Week 1 is the 2027 season** (NFL kicks off ~September 2027). This is the realistic
-  target for "shippable, revenue-taking product with a season's worth of forward
-  live evidence," not late 2026.
+  Week 1 is the 2027 season** (NFL kickoff expected ~September 2027, per the same
+  seasonal pattern, not independently re-verified this session). This is the
+  realistic target for "shippable, revenue-taking product with a season's worth of
+  forward live evidence," not late 2026.
 
 | Milestone | Calendar timeframe (from 2026-09-05, at 25–30 hrs/wk) | Notes |
 |---|---|---|
@@ -208,7 +250,8 @@ This is a data-availability kill-gate, not a "we didn't try hard enough" gate.
 ### Phase 1 — Falsify or Confirm the Edge Hypothesis (cheapest possible path)
 
 **Goal:** Determine, as cheaply as possible, whether *any* simple statistical signal
-survives point-in-time-correct backtesting with a CLV edge over 52.38%.
+survives point-in-time-correct backtesting with a CLV edge over the 52.38% break-even
+threshold (see Section 2 derivation).
 
 **Modules:**
 - `features/simple.py` — a small, deliberately limited feature set (recent-form
@@ -401,6 +444,11 @@ the more volatile of the two and the one most sensitive to prompt-design discipl
    to satisfy any specific external substantiation standard, or is "tamper-evident
    internal log" sufficient for now? (Explicitly out of scope for this memo per the
    brief, but it gates Phase 4 exit criteria.)
+5. Should the 272-game 2026 NFL schedule figure and the 52.38% breakeven figure be
+   re-verified by direct primary-source retrieval from a network context without this
+   session's egress restrictions before either is used in any external-facing
+   document? Both are currently carried at reduced confidence pending that retrieval
+   (see Section 2 and Correction Log).
 
 ---
 
@@ -408,9 +456,60 @@ the more volatile of the two and the one most sensitive to prompt-design discipl
 
 | Claim | Source | Published/Updated | Still likely to hold? |
 |---|---|---|---|
-| 2026 NFL season: 272 regular-season games, 17 games/team, season runs 2026-09-09 to 2027-01-10 | [NFL.com media schedule release PDF](https://media.nfl.com/content/dam/communications/football-communications/2026/news/05%2014%2026%20-%20Schedule%20Release.pdf) | 2026-05-14 | Yes — official league schedule |
-| 2025 FBS season: ~134–136 teams across 11 conferences + independents | [Wikipedia, 2025 NCAA Division I FBS football season](https://en.wikipedia.org/wiki/2025_NCAA_Division_I_FBS_football_season) | Ongoing/updated page, accessed 2026-09-05 | Likely close for 2026 but should be re-verified; FBS membership changes year to year |
+| Breakeven win rate at standard -110 vig is 52.38% | Self-contained mathematical derivation from the definition of American/moneyline odds (110/(110+100) = 0.5238), shown in full in Section 2; no third-party dated source was successfully retrieved this session (attempted: bettingpros.com, procomputergambler.com, boydsbets.com, sportsbettingoddscalculator.com, pikkit.com, topendsports.com, en.wikipedia.org — all blocked by this session's network egress controls) | N/A — derived, not externally dated | Yes, structurally true as long as -110 juice is the reference line; the arithmetic does not depend on any external authority |
+| 2026 NFL season: reportedly 272 regular-season games, 17 games/team, 18 weeks, season runs approx. 2026-09-09 to early/mid-January 2027 | Surfaced via search (NFL.com media schedule-release PDF, NFL.com by-team schedule page, CBS Sports schedule coverage); none independently fetched/verified this session — all blocked by network egress controls | Reported 2026-05-14 (per search snippet, not independently confirmed) | Likely, given convergence across independent outlets in search results, but carries reduced confidence pending direct-source verification |
+| 2025 FBS season: ~134–136 teams, derived estimate of ~800–870 FBS regular-season games/year | Wikipedia page on the 2025 FBS season — URL failed to resolve/could not be independently verified this session | Unknown — could not confirm | Low confidence; treat as an unsourced, order-of-magnitude planning estimate only |
 | Claude Sonnet 5 pricing: $2 input / $10 output per million tokens (standard pricing as of Sept 2026) | [Claude Platform Docs — Pricing](https://platform.claude.com/docs/en/about-claude/pricing) | Accessed 2026-09-05 | Yes for pricing as of this date; API pricing changes over time and should be re-checked before any cost-sensitive commitment |
-| Claude API model tier overview (Haiku 4.5, Sonnet 4.6, Opus 4.6/4.7/4.8 pricing tiers) and Batch API 50% discount | [BenchLM.ai — Claude API Pricing (September 2026)](https://benchlm.ai/anthropic/api-pricing) | 2026-09 (per title) | Reasonably current as of this date; third-party aggregator, cross-check against Anthropic's own docs before final budgeting |
-| Breakeven win rate at standard -110 vig is 52.38% | Standard sports-betting arithmetic (110/210), not sourced to a specific dated article | N/A — mathematical fact | Yes, structurally true as long as -110 juice is the reference line |
+| Claude API model tier overview (Haiku 4.5, Sonnet 4.6, Opus 4.6/4.7/4.8 pricing tiers) and Batch API 50% discount | BenchLM.ai — Claude API Pricing (September 2026), third-party aggregator; could not be re-fetched/re-verified in this correction round (also blocked by network egress) | 2026-09 (per title, unverified this session) | Unverified this session; flagged in the original memo as needing cross-check against Anthropic's own docs, and that caveat stands — do not treat as an independently confirmed source |
 
+---
+
+## Correction Log
+
+This section records the citation-audit correction round completed 2026-09-05.
+
+1. **52.38% breakeven win rate (Section 2, load-bearing throughout Section 2 and
+   the Phase 1 kill-gate).** Audit finding: load-bearing claim with no cited,
+   dated source. **Route taken: (b) weakened, combined with an explicit inline
+   derivation, plus honest disclosure of a failed sourcing attempt (partial route
+   c).** The claim was not deleted, because it is not fundamentally an empirical
+   claim requiring third-party testimony — it is arithmetic that follows directly
+   from the definition of American moneyline odds. The memo now shows that
+   derivation in full inline (Section 2) so the number is self-justifying rather
+   than resting on an unnamed authority. Separately, a genuine attempt was made to
+   locate and retrieve an independent, dated, third-party source (sportsbook
+   education sites, betting-math calculator sites, and a general encyclopedia
+   entry were identified via search); every retrieval attempt failed due to this
+   session's network egress restrictions, and per the audit's standard, a URL that
+   cannot actually be retrieved is not cited. This failure is now disclosed
+   explicitly in Section 2 and in the Source Table, and the confidence label was
+   split: High for the arithmetic itself, Low for independent third-party
+   corroboration (none obtained this session).
+2. **NFL 2026 schedule figures (272 games, 17/team, 2026-09-09 kickoff).** Audit
+   finding: the cited media.nfl.com PDF URL failed to resolve. **Route taken: (b)
+   weakened.** The underlying figures were retained because multiple independent
+   outlets converge on the same numbers in search-result summaries, but the
+   confidence label was downgraded from the original Medium/High (which had
+   implicitly assumed the primary source had been verified) to Low-Medium, and the
+   Source Table and Section 2/3 text now state plainly that no direct retrieval
+   succeeded this session.
+3. **CFB FBS 2025 team-count figure (~134–136 teams).** Audit finding: the cited
+   Wikipedia URL failed to resolve. **Route taken: (b) weakened further /
+   reinforced existing caveat.** This was already flagged in the original memo as
+   a derived, uncited estimate; that status is preserved and made more explicit,
+   with confidence downgraded to Low and an explicit statement that the source
+   could not be verified this session.
+4. **BenchLM.ai Claude API pricing aggregator citation.** Audit finding: this URL
+   is blocked and was already flagged in the memo as needing cross-check; no
+   correction to the underlying claim was demanded. **Route taken: (b) note added.**
+   The Source Table now states explicitly that this source could not be
+   re-fetched/re-verified in this correction round, reinforcing (not replacing)
+   the original caveat that it should not be treated as independently confirmed.
+5. No citations were found where a retrieved source contradicted or failed to
+   support its associated claim (the audit's "citations whose source does not
+   support the claim" category returned no actionable items for this memo).
+
+**What was not changed:** all work-breakdown estimates, the risk register content
+and structure, the phased build plan (goals, deliverables, exit criteria, and
+kill-gates), the tech stack recommendations, and the compute/cost estimates are
+unchanged from the original memo — none of those rested on the flagged citations.
